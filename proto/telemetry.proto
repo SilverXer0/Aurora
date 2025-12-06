@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package aurora;
+
+service TelemetryService {
+  // client-streaming ingestion: one stream per sender
+  rpc StreamTelemetry (stream TelemetryFrame) returns (StreamAck);
+
+  // simple query: aggregate over last window_seconds from "now"
+  rpc QueryWindow (QueryRequest) returns (QueryResponse);
+}
+
+message TelemetryFrame {
+  string satellite_id = 1;
+  int64  timestamp_ms = 2;  // client timestamp
+  double signal_strength = 3;
+  double temperature_c = 4;
+}
+
+message StreamAck {
+  bool ok = 1;
+  string message = 2;
+}
+
+message QueryRequest {
+  uint32 window_seconds = 1;
+}
+
+message QueryResponse {
+  uint32 window_seconds = 1;
+  uint64 count = 2;
+
+  double avg_signal_strength = 3;
+  double min_signal_strength = 4;
+  double max_signal_strength = 5;
+
+  double avg_temperature_c = 6;
+  double min_temperature_c = 7;
+  double max_temperature_c = 8;
+}

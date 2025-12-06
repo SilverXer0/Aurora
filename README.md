@@ -146,12 +146,3 @@ Example response:
 ```
 
 ---
-
-## Testing Ideas
-
-- Run a local “load generator” to hit 100k+ messages/sec (we can add this).
-- Compare query latencies with different window sizes.
-- Inspect RocksDB directory growth and compaction behavior.
-- Observe span logging output to understand pipeline internals.
-
----
